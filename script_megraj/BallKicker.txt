@@ -1,0 +1,38 @@
+using UnityEngine;
+
+public class BallKicker : MonoBehaviour
+{
+    private Rigidbody rb;
+
+    public float lowSpeed = 5f;
+    public float mediumSpeed = 10f;
+    public float highSpeed = 20f;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) // Press 1
+        {
+            KickBall(lowSpeed);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) // Press 2
+        {
+            KickBall(mediumSpeed);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) // Press 3
+        {
+            KickBall(highSpeed);
+        }
+    }
+
+    void KickBall(float force)
+    {
+        rb.velocity = Vector3.zero; // reset previous motion
+        rb.angularVelocity = Vector3.zero;
+        rb.AddForce(transform.forward * force, ForceMode.Impulse);
+    }
+}

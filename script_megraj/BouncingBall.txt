@@ -1,0 +1,49 @@
+using UnityEngine;
+
+public class BouncingBall : MonoBehaviour
+{
+    public float initialForce = 10f;    // Initial upward force
+    public float stopAfterSeconds = 5f; // Time after which damping starts
+    public float dampingFactor = 0.98f; // Rate of bounce reduction
+
+    private Rigidbody rb;
+    private float timer;
+    private bool shouldDamp = false;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        Bounce();
+    }
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (timer >= stopAfterSeconds)
+        {
+            shouldDamp = true;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (shouldDamp)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * dampingFactor, rb.velocity.z);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!shouldDamp && collision.contacts[0].normal.y > 0.5f)
+        {
+            Bounce();
+        }
+    }
+
+    void Bounce()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, initialForce, rb.velocity.z);
+    }
+}

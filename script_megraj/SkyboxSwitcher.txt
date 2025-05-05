@@ -1,0 +1,32 @@
+using UnityEngine;
+
+public class SkyboxSwitcher : MonoBehaviour
+{
+    public Material daySkybox;
+    public Material nightSkybox;
+
+    private bool isDay = true;
+
+    void Start()
+    {
+        // Set initial skybox
+        RenderSettings.skybox = daySkybox;
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) // Left mouse click
+        {
+            SwitchSkybox();
+        }
+    }
+
+    void SwitchSkybox()
+    {
+        isDay = !isDay;
+        RenderSettings.skybox = isDay ? daySkybox : nightSkybox;
+
+        // Optional: Update ambient lighting to match the skybox
+        DynamicGI.UpdateEnvironment();
+    }
+}
